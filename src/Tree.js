@@ -9,7 +9,7 @@ export default class Tree {
     if (tree === null) {
       tree = new Tree(node);
     }
-
+    // Base case
     if (node.hasChildren()) {
       _.map(node.children, function(child) {
         Tree.map(child, fn, tree);
@@ -19,5 +19,20 @@ export default class Tree {
   }
   get root() {
     return this._root;
+  }
+
+  toArray(node = null, arr = []) {
+    if (node === null) {
+      node = this._root;
+    }
+    arr.push(node.value);
+    // Base case
+    if (node.hasChildren()) {
+      var that = this;
+      _.map(node.children, function(child) {
+        that.toArray(child, arr);
+      });
+    }
+    return arr;
   }
 }

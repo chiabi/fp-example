@@ -4,6 +4,7 @@ import Person from "./Person";
 import Address from "./Address";
 import Node from "./Node";
 import Tree from "./Tree";
+import { NAMES } from "./constants";
 
 const p1 = new Person("Haskell", "Curry", "111-11-1111");
 p1.address = new Address("US");
@@ -173,13 +174,7 @@ const result12 = _(persons)
 // 함수형 프로그래밍은 자료구조보다 연산에 중점을 둔다.
 
 // 리스트를 읽고 데이터를 정제 후 중복은 제거하고 정렬하는 일련의 작업 해보기.
-const NAMES = [
-  "alonzo church",
-  "Haskell curry",
-  "stephen_kleene",
-  "John Von Neumann",
-  "stephen_kleene"
-];
+
 // 명령형
 // 단점: 특정 문제의 해결만을 목표로 한다.
 // 추상화 수준이 낮으면 코드를 재사용할 기회는 줄어들고
@@ -209,7 +204,7 @@ const result14 = _.chain(NAMES)
   .map(_.startCase)
   .sort()
   .value();
-console.log(result14);
+// console.log(result14);
 
 // 유사 SQL 데이터: 데이터로서의 함수
 // lodash 믹스인(mixin)을 통해 핵심 라이브러리에 함수를 추가하여 체이닝하여 사용할 수 있다.
@@ -225,7 +220,7 @@ const result15 = _.from(persons)
   .sortBy(["firstname"])
   .select(p => p.firstname)
   .value();
-console.log(result15);
+// console.log(result15);
 
 // 데이터로서의 함수: 자바스크립트 코드도 SQL처럼 데이터를 함수 형태로 모형화할 수 있다.
 // 선언적으로 '어떤' 데이터가 출력되어야 할지 서술할 뿐 그 출력을 '어떻게' 하는지는 논하지 않는다.
@@ -282,7 +277,26 @@ const sumTail = (arr, acc = 0) => {
 
 // 노드: 값을 지닌 객체로 자신의 부모와 자식 배열을 레퍼런스로 참조한다.
 // 재귀적으로 정의한 자료 구조
-const church = new Node(new Person("Alonzo", "Church", "111-11-1111"));
-const rosser = new Node(new Person("Barkley", "Rosser", "222-22-2222"));
+const church = new Node(p4);
+const rosser = new Node(p2);
 const turing = new Node(new Person("Alan", "Turing", "333-33-3333"));
 const kleene = new Node(new Person("Stephen", "Kleene", "444-44-4444"));
+const nelson = new Node(new Person("Nels", "Nelson", "123-23-2345"));
+const constable = new Node(new Person("Robert", "Constable", "123-23-6778"));
+const mendelson = new Node(new Person("Elliot", "Mendelson", "123-23-3454"));
+const sacks = new Node(new Person("Gerald", "Sacks", "454-76-3434"));
+const gandy = new Node(new Person("Robert", "Gandy", "454-78-3432"));
+
+church
+  .append(rosser)
+  .append(turing)
+  .append(kleene);
+kleene.append(nelson).append(constable);
+rosser.append(mendelson).append(sacks);
+turing.append(gandy);
+
+const newTree = Tree.map(church, p => p.fullname);
+// console.log(newTree.toArray());
+
+// 변이 및 부수효과 없는 자료형을 다룰 때 데이터 자체를 캡슐화하여
+// 데이터에 접근하는 방법을 통제하는 것이 함수형 프로그래밍의 관건이다.

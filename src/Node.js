@@ -1,3 +1,5 @@
+import { isValid } from "./utils";
+
 export default class Node {
   constructor(val) {
     this._val = val;
